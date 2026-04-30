@@ -1,3 +1,4 @@
+/* eslint-env node */
 const { test, describe, expect } = require('@playwright/test')
 
 describe('Pokedex', () => {
