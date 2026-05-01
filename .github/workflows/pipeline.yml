@@ -33,20 +33,20 @@ jobs:
         run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
       - name: Notify success
         if: ${{ github.event_name == 'push' && !contains(toJson(github.event.commits), '#skip') && success() }}
-        uses: rjstone/discord-webhook-notify@v1
+        uses: sarisia/actions-status-discord@v1
         with:
-          severity: info
-          text: A new version deployed successfully!
-          description: "Commit: ${{ github.sha }} by ${{ github.actor }}"
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: success
+          title: Deployment successful!
+          description: "A new version deployed by ${{ github.actor }}"
       - name: Notify failure
         if: ${{ failure() }}
-        uses: rjstone/discord-webhook-notify@v1
+        uses: sarisia/actions-status-discord@v1
         with:
-          severity: error
-          text: Build failed!
-          description: "Commit: ${{ github.sha }} by ${{ github.actor }} - ${{ github.event.commits[0].message }}"
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: failure
+          title: Build failed!
+          description: "Commit by ${{ github.actor }}: ${{ github.event.commits[0].message }}"
 
   tag_release:
     needs: [simple_deployment_pipeline]
