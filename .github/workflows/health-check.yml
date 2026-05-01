@@ -1,0 +1,19 @@
+name: Periodic health check
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/15 * * * *'
+
+jobs:
+  health_check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check health endpoint
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://ci-cd-6rh2.onrender.com/health)
+          if [ "$response" != "200" ]; then
+            echo "Health check failed with status $response"
+            exit 1
+          fi
+          echo "Health check passed with status $response"
