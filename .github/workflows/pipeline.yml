@@ -13,8 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Debug commits
-        run: echo "${{ toJson(github.event.commits) }}"
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
